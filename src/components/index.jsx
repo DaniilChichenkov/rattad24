@@ -6,6 +6,7 @@ import Services from "./Services";
 import AppointmentForm from "./Form";
 import Contacts from "./Contacts";
 import Footer from "./Footer";
+import ServicesList from "./ServicesList";
 
 export {
   Navigation,
@@ -16,4 +17,5 @@ export {
   AppointmentForm,
   Contacts,
   Footer,
+  ServicesList,
 };

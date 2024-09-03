@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class LanguageStore {
-  currentLang = "est";
+  currentLang = window.localStorage.getItem("lang") || "rus";
 
   constructor() {
     makeAutoObservable(this);
@@ -10,6 +10,7 @@ class LanguageStore {
   set setLanguage(lang) {
     if (lang === "est" || lang === "rus" || lang === "fin") {
       this.currentLang = lang;
+      window.localStorage.setItem("lang", lang);
     }
   }
 

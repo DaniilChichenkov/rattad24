@@ -1,96 +1,177 @@
 import { observer } from "mobx-react-lite";
+import { useState } from "react";
 
 import sideMenuStore from "../stores/sideMenuStore";
 import langStore from "../stores/langStore";
+import refsStorage from "../stores/refsStore";
 
 import logo from "../assets/logo.png";
 
 const Navigation = observer(() => {
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+
+  const currentLang = langStore.getLanguage();
+
+  const toggleDropdown = () => {
+    setLangDropdownOpen(!langDropdownOpen);
+  };
+
+  const handleClick = (key) => {
+    const elRef = refsStorage.getRef(key);
+    if (elRef) {
+      elRef.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <header className="bg-white z-10">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
         <img className="w-16 rotate-90 ml-4" src={logo} alt="Logo image" />
+        <a href="tel:+37253540737" className="btn btn-primary">
+          <i className="fa-solid fa-phone"></i>
+        </a>
 
         <div className="flex flex-1 items-center justify-end md:gap-10">
           <nav aria-label="Global" className="hidden md:block">
             <ul className="flex items-center gap-6 text-sm">
               <li>
-                <a
+                <button
+                  onClick={() => {
+                    handleClick("about");
+                  }}
                   className="text-gray-500 transition hover:text-gray-500/75"
-                  href="#"
                 >
-                  {" "}
-                  About us{" "}
-                </a>
+                  {currentLang === "rus" ? (
+                    <>О нас</>
+                  ) : currentLang === "est" ? (
+                    <>Meist</>
+                  ) : (
+                    <>Meistä</>
+                  )}
+                </button>
               </li>
               <li>
-                <a
+                <button
                   className="text-gray-500 transition hover:text-gray-500/75"
-                  href="#"
+                  onClick={() => {
+                    handleClick("form");
+                  }}
                 >
-                  {" "}
-                  Form{" "}
-                </a>
+                  {currentLang === "rus" ? (
+                    <>Забронировать визит</>
+                  ) : currentLang === "est" ? (
+                    <>Broneeri visiit</>
+                  ) : (
+                    <>Varaa käynti</>
+                  )}
+                </button>
               </li>
               <li>
-                <a
+                <button
                   className="text-gray-500 transition hover:text-gray-500/75"
-                  href="#"
+                  onClick={() => {
+                    handleClick("contacts");
+                  }}
                 >
-                  {" "}
-                  Contacts{" "}
-                </a>
+                  {currentLang === "rus" ? (
+                    <>Контакты</>
+                  ) : currentLang === "est" ? (
+                    <>Kontaktid</>
+                  ) : (
+                    <>Yhteystiedot</>
+                  )}
+                </button>
+              </li>
+              <li>
+                <button
+                  className="text-gray-500 transition hover:text-gray-700/75"
+                  onClick={() => handleClick("services")}
+                >
+                  {currentLang === "rus" ? (
+                    <>Наши услуги</>
+                  ) : currentLang === "est" ? (
+                    <>Meie teenused</>
+                  ) : (
+                    <>Palvelumme</>
+                  )}
+                </button>
               </li>
             </ul>
           </nav>
 
           <div className="flex items-center gap-4 relative">
             {/* Language selection */}
-            <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="btn m-1">
-                {langStore.getLanguage()}
+            <div className="relative">
+              <div className="inline-flex items-center overflow-hidden rounded-md border bg-white">
+                <button onClick={toggleDropdown} className="btn btn-primary">
+                  {langStore.getLanguage()}
+                </button>
               </div>
-              <ul
-                tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-24 p-2 shadow gap-y-4"
+
+              <div
+                className={`absolute z-10 mt-2 w-20 rounded-md md:-ml-10  ${
+                  langDropdownOpen ? "block" : "hidden"
+                }`}
+                role="menu"
               >
-                <li>
-                  <button
-                    onClick={() => {
-                      langStore.setLanguage = "est";
-                    }}
-                    className={`btn btn-${
-                      langStore.getLanguage() === "est" ? "primary" : "outline"
-                    }`}
+                <div className="p-2">
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content menu bg-base-100 rounded-box z-[1] w-24 p-2 shadow gap-y-4"
                   >
-                    est
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      langStore.setLanguage = "fin";
-                    }}
-                    className={`btn btn-${
-                      langStore.getLanguage() === "fin" ? "primary" : "outline"
-                    }`}
-                  >
-                    fin
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      langStore.setLanguage = "rus";
-                    }}
-                    className={`btn btn-${
-                      langStore.getLanguage() === "rus" ? "primary" : "outline"
-                    }`}
-                  >
-                    rus
-                  </button>
-                </li>
-              </ul>
+                    <li>
+                      <button
+                        onClick={() => {
+                          langStore.setLanguage = "est";
+                          setLangDropdownOpen(false);
+                        }}
+                        id="lang-selection-btn"
+                        className={`btn btn-${
+                          langStore.getLanguage() === "est"
+                            ? "primary"
+                            : "outline"
+                        }`}
+                      >
+                        est
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          langStore.setLanguage = "fin";
+                          setLangDropdownOpen(false);
+                        }}
+                        id="lang-selection-btn"
+                        className={`btn btn-${
+                          langStore.getLanguage() === "fin"
+                            ? "primary"
+                            : "outline"
+                        }`}
+                      >
+                        fin
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          langStore.setLanguage = "rus";
+                          setLangDropdownOpen(false);
+                        }}
+                        id="lang-selection-btn"
+                        className={`btn btn-${
+                          langStore.getLanguage() === "rus"
+                            ? "primary"
+                            : "outline"
+                        }`}
+                      >
+                        rus
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             {/* Side menu */}
             <button

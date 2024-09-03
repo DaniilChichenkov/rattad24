@@ -1,10 +1,24 @@
 import { observer } from "mobx-react-lite";
 
 import sideMenuStore from "../stores/sideMenuStore";
+import refsStorage from "../stores/refsStore";
+import langStore from "../stores/langStore";
 
 import logo from "../assets/logo.png";
 
 const SideMenu = observer(() => {
+  const currentLang = langStore.getLanguage();
+
+  const handleClick = (key) => {
+    sideMenuStore.sideMenuOpened = false;
+    const elRef = refsStorage.getRef(key);
+    if (elRef) {
+      elRef.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div
       className={`flex h-screen flex-col justify-between border-e bg-white z-20 fixed inset-0 transition-transform  ${
@@ -28,22 +42,73 @@ const SideMenu = observer(() => {
         <ul className="mt-6 space-y-6">
           {/* About us section */}
           <li>
-            <button className="btn btn-ghost bg-base-200 w-full rounded-lg text-xl font-medium">
-              <p className="w-full text-left">About us</p>
+            <button
+              onClick={() => handleClick("about")}
+              className="btn btn-ghost bg-base-200 w-full rounded-lg text-xl font-medium"
+            >
+              <p className="w-full text-left">
+                {currentLang === "rus" ? (
+                  <>О нас</>
+                ) : currentLang === "est" ? (
+                  <>Meist</>
+                ) : (
+                  <>Meistä</>
+                )}
+              </p>
             </button>
           </li>
 
           {/* Form  */}
           <li>
-            <button className="btn btn-ghost bg-base-200 w-full rounded-lg text-xl font-medium">
-              <p className="w-full text-left">Form</p>
+            <button
+              onClick={() => handleClick("form")}
+              className="btn btn-ghost bg-base-200 w-full rounded-lg text-xl font-medium"
+            >
+              <p className="w-full text-left">
+                {currentLang === "rus" ? (
+                  <>Забронировать визит</>
+                ) : currentLang === "est" ? (
+                  <>Broneeri visiit</>
+                ) : (
+                  <>Varaa käynti</>
+                )}
+              </p>
             </button>
           </li>
 
           {/* Contacts */}
           <li>
-            <button className="btn btn-ghost bg-base-200 w-full rounded-lg text-xl font-medium">
-              <p className="w-full text-left">Contacts</p>
+            <button
+              onClick={() => handleClick("services")}
+              className="btn btn-ghost bg-base-200 w-full rounded-lg text-xl font-medium"
+            >
+              <p className="w-full text-left">
+                {currentLang === "rus" ? (
+                  <>Наши услуги</>
+                ) : currentLang === "est" ? (
+                  <>Meie teenused</>
+                ) : (
+                  <>Palvelumme</>
+                )}
+              </p>
+            </button>
+          </li>
+
+          {/* Contacts */}
+          <li>
+            <button
+              onClick={() => handleClick("contacts")}
+              className="btn btn-ghost bg-base-200 w-full rounded-lg text-xl font-medium"
+            >
+              <p className="w-full text-left">
+                {currentLang === "rus" ? (
+                  <>Контакты</>
+                ) : currentLang === "est" ? (
+                  <>Kontaktid</>
+                ) : (
+                  <>Yhteystiedot</>
+                )}
+              </p>
             </button>
           </li>
         </ul>
