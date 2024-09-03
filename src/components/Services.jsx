@@ -53,7 +53,6 @@ const Services = observer(() => {
   }, []);
 
   const ctaClick = (key) => {
-    console.log(key);
     const elRef = refsStorage.getRef(key);
     if (elRef) {
       elRef.scrollIntoView({
@@ -68,7 +67,6 @@ const Services = observer(() => {
   const handleSmallScreenClick = (e, i) => {
     setTimeout(() => {
       if (refs.current[i].current && e.target === refs.current[i].current) {
-        console.log(refs.current[i].current);
         refs.current[i].current.scrollIntoView({
           behavior: "auto",
           block: "start",
@@ -84,7 +82,6 @@ const Services = observer(() => {
         refs.current[colI][itemI].current &&
         e.target === refs.current[colI][itemI].current
       ) {
-        console.log(refs.current[colI][itemI].current);
         refs.current[colI][itemI].current.scrollIntoView({
           behavior: "auto",
           block: "start",
